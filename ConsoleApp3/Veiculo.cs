@@ -15,8 +15,21 @@ namespace ConsoleApp3
         public int Cilindrada { get; set; }
         public string Matricula { get; set; }
 
+        /*
         public int numPortas;
         public int numPneus;
+
+       
+        public Veiculo()
+        {
+            Cor = "Vazio";
+            Marca = "Vazio";
+            Modelo = "Vazio";
+            Cilindrada = 0;
+            Matricula = "xx-xx-yy";
+        }
+        */
+
         virtual public void Pedir()
         {
             Console.Write($"Cor: ");
