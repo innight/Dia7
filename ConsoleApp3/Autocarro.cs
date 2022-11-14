@@ -20,6 +20,7 @@ namespace ConsoleApp3
                 capacidade = value;
             }
         }
+        public static List<Autocarro> AutoList = new List<Autocarro>();
 
         public override void Pedir()
         {
@@ -33,9 +34,17 @@ namespace ConsoleApp3
             return $"Cor: {Cor}\nMarca: {Marca}\nModelo: {Modelo}\nMatricula: {Matricula}\nCapacidade: {Capacidade}";
         }
 
-        public override void Mostrar()
-        {
-            Console.WriteLine(ToString());
-        }
+        //public override void MostrarVeiculo()
+        //{
+        //    Console.WriteLine(ToString());
+        //}
+
+        //public static void MostrarTodosAutocarros()
+        //{
+        //    foreach (Autocarro autocarro in AutoList)
+        //    {
+        //        autocarro.MostrarVeiculo();
+        //    }
+        //}
     }
 }

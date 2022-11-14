@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace ConsoleApp3
@@ -45,15 +46,15 @@ namespace ConsoleApp3
 
             // START //
 
+            // PASSOS por fazer: 07/11/2022 //
+            // Valida a idade da pessoa
+            // Acrescentar contador de id na pessoa?
+            // Criar Pessoa / Funcionario / Cliente
+            // Criar classe escola com toda a informação - agregação (Cliente; Veiculos)
+
+
             // Chama Menu
             MainMenu();
-
-            // MENU - veiculo | Pessoa
-            // SUBMENU - ADICIONAR/LISTAR Veiculo | Pessoa
-            // Valida a idade da pessoa
-            // Preenche a categoria do veiculo
-            // Adicionar á lista
-
             Console.ReadKey();
         }
 
@@ -66,7 +67,7 @@ namespace ConsoleApp3
                 Console.WriteLine("Escola Condução:");
                 Console.WriteLine("  1. veiculos");
                 Console.WriteLine("  2. alunos");
-                Console.Write("Escolha a opção (0 para sair): ");
+                Console.WriteLine("Escolha a opção (0 para sair): ");
                 do
                 {
                     choice = (char)Console.Read();
@@ -80,11 +81,11 @@ namespace ConsoleApp3
                     Console.WriteLine("Sair");
                     break;
                 case '1':
-                    //Adicionar Veiculo
+                    //Menu Veiculos
                     VehicleMenu();
                     break;
                 case '2':
-                    Console.WriteLine("2");
+                    Console.WriteLine("Não implementada !!!!");
                     break;
             }
             Console.WriteLine();
@@ -92,6 +93,7 @@ namespace ConsoleApp3
 
         static void VehicleMenu()
         {
+            Console.Clear();
             Console.WriteLine("MENU - VEICULOS:");
             Console.WriteLine("1 - Adicionar Veiculo.");
             Console.WriteLine("2- Listar Veiculos");
@@ -107,6 +109,7 @@ namespace ConsoleApp3
                 }
                 Console.WriteLine("Pff coloque valor inteiro");
             }
+            Console.WriteLine("\n");
 
             switch (choice)
             {
@@ -114,7 +117,7 @@ namespace ConsoleApp3
                     VehicleAddMenu();
                     break;
                 case 2:
-                    // Listar Veiculos();
+                    VehicleShowMenu();
                     break;
                 case 3:
                     MainMenu();
@@ -125,41 +128,105 @@ namespace ConsoleApp3
         }
         static void VehicleAddMenu()
         {
-            Console.WriteLine("Adiciona - VEICULOS:");
-            Console.WriteLine("1 - Carro.");
-            Console.WriteLine("2- Mota");
-            Console.WriteLine("3- Autocarro");
-            Console.WriteLine("4 - Voltar.");
-
             byte choice;
-            while (true)
+            do
             {
-                Console.WriteLine("Selecione : ");
-                if (byte.TryParse(Console.ReadLine(), out choice))
+                Console.Clear();
+                Console.WriteLine("Adiciona - VEICULOS:");
+                Console.WriteLine("1 - Carro.");
+                Console.WriteLine("2- Apaga carro");
+                Console.WriteLine("3- Editar carro");
+                Console.WriteLine("4- Autocarro");
+                Console.WriteLine("5 - Voltar.");
+
+                while (!byte.TryParse(Console.ReadLine(), out choice))
                 {
-                    break;
+                    Console.WriteLine("Pff coloque valor inteiro");
                 }
-                Console.WriteLine("Pff coloque valor inteiro");
+
+                switch (choice)
+                {
+                    case 1:
+                        Carro carro = new Carro();
+                        carro.Pedir();
+                        Carro.CarroList.Add(carro);
+                        Veiculo.VeiculoList.Add(carro);
+
+                        MainMenu();
+                        break;
+                    case 2:
+                        Console.WriteLine("GUID :");
+                        var teste = Guid.Parse(Console.ReadLine());
+                        Carro.ApagarCarro(teste);
+
+                        MainMenu();
+                        break;
+                    case 3:
+                        Console.WriteLine("GUID :");
+                        var teste1 = Guid.Parse(Console.ReadLine());
+                        Carro.AlterarCarro(teste1);
+
+                        MainMenu();
+                        break;
+                    case 4:
+                        Autocarro auto = new Autocarro();
+                        auto.Pedir();
+                        //auto.MostrarVeiculo();
+                        Autocarro.AutoList.Add(auto);
+                        Veiculo.VeiculoList.Add(auto);
+
+                        MainMenu();
+                        break;
+                    case 5:
+                        MainMenu();
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
             }
+            while (choice < 0 & choice != 0);
+        }
+        static void VehicleShowMenu()
+        {
+            char choice;
+
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Mostra - VEICULOS:");
+                Console.WriteLine("1 - Carro.");
+                Console.WriteLine("2- Mota");
+                Console.WriteLine("3- Autocarro");
+                Console.WriteLine("4- Todos os veiculos");
+                Console.WriteLine("5 - Voltar.");
+
+                do
+                {
+                    choice = (char)Console.Read();
+                } while (choice == '\n' | choice == '\r');
+            } while (choice > '5' & choice != '0');
+            Console.WriteLine("\n");
+
 
             switch (choice)
             {
-                case 1:
-                    Carro carro = new Carro();
-                    carro.Pedir();
-                    carro.Mostrar();
+                case '1':
+                    Carro.MostrarTodosCarros();
+                    MainMenu();
                     break;
-                case 2:
-                    Mota mota = new Mota();
-                    mota.Pedir();
-                    mota.Mostrar();
+                case '2':
+                    Mota.MostrarTodasMotas();
+                    MainMenu();
                     break;
-                case 3:
-                    Autocarro auto = new Autocarro();
-                    auto.Pedir();
-                    auto.Mostrar();
+                case '3':
+                    //Autocarro.MostrarTodosAutocarros();
+                    MainMenu();
                     break;
-                case 4:
+                case '4':
+                    Veiculo.MostrarTodosVeiculos();
+                    MainMenu();
+                    break;
+                case '5':
                     MainMenu();
                     break;
                 default:

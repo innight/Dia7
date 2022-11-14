@@ -9,6 +9,7 @@ namespace ConsoleApp3
     internal class Mota : Veiculo
     {
         public int numEscapes { get; set; }
+        public static List<Mota> MotaList = new List<Mota>();
 
         public override void Pedir()
         {
@@ -22,9 +23,17 @@ namespace ConsoleApp3
             return $"Cor: {Cor}\nMarca: {Marca}\nModelo: {Modelo}\nMatricula: {Matricula}\nNumEcapes: {numEscapes}";
         }
 
-        public override void Mostrar()
+        //public override void MostrarVeiculo()
+        //{
+        //    Console.WriteLine(ToString());
+        //}
+
+        public static void MostrarTodasMotas()
         {
-            Console.WriteLine(ToString());
+            foreach (Mota mota in MotaList)
+            {
+                //mota.MostrarVeiculo();
+            }
         }
     }
 }
