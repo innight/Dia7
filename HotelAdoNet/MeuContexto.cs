@@ -3,8 +3,10 @@
 namespace HotelAdoNet
 {
     //DBCONTEXT
-
-    class MeuContexto : DbContext
+    /// <summary>
+    ///  EFCore context class for Hotel Wings database schema version 5.0
+    /// </summary>
+    public class MeuContexto : DbContext
     {
         public DbSet<Quarto> Quartos { get; set; }
         public DbSet<FotoQuarto> FotosQuartos { get; set; }

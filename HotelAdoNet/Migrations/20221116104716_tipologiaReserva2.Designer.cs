@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotelAdoNet.Migrations
 {
     [DbContext(typeof(MeuContexto))]
-    [Migration("20221114205737_FotoQuartos_Reservas")]
-    partial class FotoQuartos_Reservas
+    [Migration("20221116104716_tipologiaReserva2")]
+    partial class tipologiaReserva2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,7 +31,12 @@ namespace HotelAdoNet.Migrations
                     b.Property<byte[]>("Imagem")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int>("QuartoId")
+                        .HasColumnType("int");
+
                     b.HasKey("id");
+
+                    b.HasIndex("QuartoId");
 
                     b.ToTable("FotosQuartos");
                 });
@@ -52,29 +57,16 @@ namespace HotelAdoNet.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FotoId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("FotoQuartoid")
-                        .HasColumnType("int");
-
                     b.Property<int>("Numero")
                         .HasColumnType("int");
 
                     b.Property<int>("Piso")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReservaId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TipologiaId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FotoQuartoid");
-
-                    b.HasIndex("ReservaId");
 
                     b.HasIndex("TipologiaId");
 
@@ -94,7 +86,12 @@ namespace HotelAdoNet.Migrations
                     b.Property<DateTime>("DataInicio")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("TipologiaId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TipologiaId");
 
                     b.ToTable("Reservas");
                 });
@@ -106,52 +103,57 @@ namespace HotelAdoNet.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Nome")
-                        .HasColumnType("int");
+                    b.Property<string>("Nome")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Tipologias");
                 });
 
-            modelBuilder.Entity("HotelAdoNet.Quarto", b =>
+            modelBuilder.Entity("HotelAdoNet.FotoQuarto", b =>
                 {
-                    b.HasOne("HotelAdoNet.FotoQuarto", "FotoQuarto")
-                        .WithMany("Quartos")
-                        .HasForeignKey("FotoQuartoid");
-
-                    b.HasOne("HotelAdoNet.Reserva", "Reserva")
-                        .WithMany("Quartos")
-                        .HasForeignKey("ReservaId")
+                    b.HasOne("HotelAdoNet.Quarto", "Quarto")
+                        .WithMany("FotoQuartos")
+                        .HasForeignKey("QuartoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Quarto");
+                });
+
+            modelBuilder.Entity("HotelAdoNet.Quarto", b =>
+                {
                     b.HasOne("HotelAdoNet.Tipologia", "Tipologia")
                         .WithMany("Quartos")
                         .HasForeignKey("TipologiaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("FotoQuarto");
-
-                    b.Navigation("Reserva");
-
                     b.Navigation("Tipologia");
-                });
-
-            modelBuilder.Entity("HotelAdoNet.FotoQuarto", b =>
-                {
-                    b.Navigation("Quartos");
                 });
 
             modelBuilder.Entity("HotelAdoNet.Reserva", b =>
                 {
-                    b.Navigation("Quartos");
+                    b.HasOne("HotelAdoNet.Tipologia", "Tipologia")
+                        .WithMany("Reservas")
+                        .HasForeignKey("TipologiaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tipologia");
+                });
+
+            modelBuilder.Entity("HotelAdoNet.Quarto", b =>
+                {
+                    b.Navigation("FotoQuartos");
                 });
 
             modelBuilder.Entity("HotelAdoNet.Tipologia", b =>
                 {
                     b.Navigation("Quartos");
+
+                    b.Navigation("Reservas");
                 });
 #pragma warning restore 612, 618
         }

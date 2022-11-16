@@ -8,8 +8,9 @@ namespace HotelAdoNet
         public int Id { private set; get; }
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
-        public int? QuartoId { get; set; }
-        public Quarto Quarto { get; set; }
+
+        public int TipologiaId { get; set; }
+        public Tipologia Tipologia { get; set; }
 
     }
 }

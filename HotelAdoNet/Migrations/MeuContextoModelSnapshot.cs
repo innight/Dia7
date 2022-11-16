@@ -61,7 +61,12 @@ namespace HotelAdoNet.Migrations
                     b.Property<int>("Piso")
                         .HasColumnType("int");
 
+                    b.Property<int>("TipologiaId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TipologiaId");
 
                     b.ToTable("Quartos");
                 });
@@ -79,12 +84,12 @@ namespace HotelAdoNet.Migrations
                     b.Property<DateTime>("DataInicio")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("QuartoId")
+                    b.Property<int>("TipologiaId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("QuartoId");
+                    b.HasIndex("TipologiaId");
 
                     b.ToTable("Reservas");
                 });
@@ -96,15 +101,10 @@ namespace HotelAdoNet.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Nome")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuartoId")
-                        .HasColumnType("int");
+                    b.Property<string>("Nome")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("QuartoId");
 
                     b.ToTable("Tipologias");
                 });
@@ -120,33 +120,38 @@ namespace HotelAdoNet.Migrations
                     b.Navigation("Quarto");
                 });
 
-            modelBuilder.Entity("HotelAdoNet.Reserva", b =>
+            modelBuilder.Entity("HotelAdoNet.Quarto", b =>
                 {
-                    b.HasOne("HotelAdoNet.Quarto", "Quarto")
-                        .WithMany("Reservas")
-                        .HasForeignKey("QuartoId");
-
-                    b.Navigation("Quarto");
-                });
-
-            modelBuilder.Entity("HotelAdoNet.Tipologia", b =>
-                {
-                    b.HasOne("HotelAdoNet.Quarto", "Quarto")
-                        .WithMany("Tipologias")
-                        .HasForeignKey("QuartoId")
+                    b.HasOne("HotelAdoNet.Tipologia", "Tipologia")
+                        .WithMany("Quartos")
+                        .HasForeignKey("TipologiaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Quarto");
+                    b.Navigation("Tipologia");
+                });
+
+            modelBuilder.Entity("HotelAdoNet.Reserva", b =>
+                {
+                    b.HasOne("HotelAdoNet.Tipologia", "Tipologia")
+                        .WithMany("Reservas")
+                        .HasForeignKey("TipologiaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tipologia");
                 });
 
             modelBuilder.Entity("HotelAdoNet.Quarto", b =>
                 {
                     b.Navigation("FotoQuartos");
+                });
+
+            modelBuilder.Entity("HotelAdoNet.Tipologia", b =>
+                {
+                    b.Navigation("Quartos");
 
                     b.Navigation("Reservas");
-
-                    b.Navigation("Tipologias");
                 });
 #pragma warning restore 612, 618
         }
